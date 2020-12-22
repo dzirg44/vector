@@ -126,7 +126,10 @@ kubernetesLogsSource:
   enabled: true
   # The name to use for the "built-in" kubernetes logs source.
   sourceId: kubernetes_logs
-  # Raw TOML config to embed at the kubernetes logs source.
+  # Additional config to embed at the kubernetes logs source.
+  config: {}
+    # option: "value"
+  # Raw TOML config to embed at the kubernetes logs source (deprecated).
   rawConfig: null
 
 # The "built-in" vector sink, to send the logs to the vector aggregator.
@@ -212,6 +215,7 @@ prometheusSink:
 sources: {}
   # source_name:
   #   type: "source_type"
+  #   option: "value"
   #   rawConfig: |
   #     option = "value"
 
@@ -220,6 +224,7 @@ transforms: {}
   # transform_name:
   #   type: "transform_type"
   #   inputs: ["input1", "input2"]
+  #   option: "value"
   #   rawConfig: |
   #     option = "value"
 
@@ -228,5 +233,6 @@ sinks: {}
   # sink_name:
   #   type: "sink_type"
   #   inputs: ["input1", "input2"]
+  #   option: "value"
   #   rawConfig: |
   #     option = "value"

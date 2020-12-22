@@ -1,0 +1,5 @@
+vectorSink:
+  enabled: true
+  inputs: ["my_input_1", "my_input_2"]
+  host: "vector.internal"
+  port: 9000

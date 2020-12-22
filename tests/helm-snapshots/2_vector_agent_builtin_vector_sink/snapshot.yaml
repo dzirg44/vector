@@ -2,7 +2,7 @@
 # This file is generated
 # - by "scripts/helm-snapshot-tests.sh"
 # - for the chart at "distribution/helm/vector-agent"
-# - with the values from "tests/helm-snapshots/1_vector_topology_config/values.yaml"
+# - with the values from "tests/helm-snapshots/2_vector_agent_builtin_vector_sink/values.yaml"
 ---
 # Source: vector-agent/templates/serviceaccount.yaml
 apiVersion: v1
@@ -44,6 +44,17 @@ data:
     # Ingest logs from Kubernetes.
     [sources.kubernetes_logs]
       type = "kubernetes_logs"
+    # Send logs to the aggregator.
+    [sinks.vector_sink]
+      type = "vector"
+      inputs = ["my_input_1","my_input_2"]
+      address = "vector.internal:9000"
+    [sources]
+      [sources.vector_sink]
+        address = "vector.internal:9000"
+        inputs = ["my_input_1", "my_input_2"]
+        type = "vector"
+    
     # Capture the metrics from the host.
     [sources]
       [sources.host_metrics]
@@ -58,84 +69,6 @@ data:
       type = "prometheus"
       inputs = ["internal_metrics","host_metrics"]
       address = "0.0.0.0:9090"
-    
-    [sources]
-      [sources.source1]
-        option1 = "value1"
-        option2 = "value2"
-        type = "type1"
-    
-      [sources.source1]
-        option = "value"
-        arbitrary text
-        
-    [sources]
-      [sources.source2]
-        optionA = "valueA"
-        type = "type2"
-        [sources.source2.optionB]
-          suboption = "valueB"
-    
-      [sources.source2]
-        arbitrary text 2
-        
-    [sources]
-      [sources.source3]
-        type = "type3"
-    
-    [transforms]
-      [transforms.transform1]
-        inputs = ["input1", "input2"]
-        option1 = "value1"
-        option2 = "value2"
-        type = "type1"
-    
-      [transforms.transform1]
-        option = "value"
-        arbitrary text
-        
-    [transforms]
-      [transforms.transform2]
-        inputs = ["input2", "input1"]
-        optionA = "valueA"
-        type = "type2"
-        [transforms.transform2.optionB]
-          suboption = "valueB"
-    
-      [transforms.transform2]
-        arbitrary text 2
-        
-    [transforms]
-      [transforms.transform3]
-        inputs = []
-        type = "type3"
-    
-    [sinks]
-      [sinks.sink1]
-        inputs = ["input1", "input2"]
-        option1 = "value1"
-        option2 = "value2"
-        type = "type1"
-    
-      [sinks.sink1]
-        option = "value"
-        arbitrary text
-        
-    [sinks]
-      [sinks.sink2]
-        inputs = ["input2", "input1"]
-        optionA = "valueA"
-        type = "type2"
-        [sinks.sink2.optionB]
-          suboption = "valueB"
-    
-      [sinks.sink2]
-        arbitrary text 2
-        
-    [sinks]
-      [sinks.sink3]
-        inputs = []
-        type = "type3"
 ---
 # Source: vector-agent/templates/rbac.yaml
 # Permissions to use Kubernetes API.

@@ -34,7 +34,8 @@ EOF
     --namespace vector \
     --create-namespace \
     --values "$VALUES_FILE" \
-    --version master
+    --version master \
+    --debug
 }
 
 update() {
@@ -61,6 +62,7 @@ check() {
 
       if [[ "$GENERATED" != "$FILE" ]]; then
         echo "Error: snapshot ($TARGET_FILE) does not match the generated version" >&2
+        diff "$TARGET_FILE" - <<<"$GENERATED"
         exit 1
       fi
     )
