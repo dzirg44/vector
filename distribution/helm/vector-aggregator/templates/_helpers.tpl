@@ -10,8 +10,14 @@ Resolve effective service ports to use.
   protocol: TCP
   targetPort: {{ .Values.vectorSource.listenPort }}
 {{- end }}
-{{- with .Values.service.ports }}
-{{ toYaml . }}
+{{- range $key, $value := .Values.service.ports }}
+- name: {{ $value.name }}
+  port: {{ $value.port }}
+  protocol: {{ $value.protocol }}
+  targetPort: {{ $value.targetPort}}
+{{- if (and (eq $.Values.service.type "NodePort") (not (empty $value.nodePort))) }}
+  nodePort: {{ $value.nodePort }}
+{{- end }}
 {{- end }}
 {{- end }}
 
