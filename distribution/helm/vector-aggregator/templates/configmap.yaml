@@ -11,6 +11,16 @@ data:
   managed.toml: |
     {{- include "libvector.vectorConfigHeader" . | nindent 4 -}}
 
+    {{- with .Values.vectorApi }}
+    {{- if .enabled }}
+    [api]
+      enabled = {{- .enabled }}
+      address = {{- .address | quote }}
+      playground = {{- .playground }}
+    {{- printf "\n" -}}
+    {{- end }}
+    {{- end }}
+
     {{- with .Values.vectorSource }}
     {{- if .enabled }}
     # Accept logs from Vector agents.
